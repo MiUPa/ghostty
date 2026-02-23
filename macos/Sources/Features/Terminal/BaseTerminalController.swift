@@ -1267,6 +1267,17 @@ class BaseTerminalController: NSWindowController,
     }
 
     @IBAction func changeTabTitle(_ sender: Any) {
+        if let targetWindow = window {
+            let inlineHostWindow =
+                targetWindow.tabbedWindows?
+                    .first(where: { $0.tabBarView != nil }) as? TerminalWindow
+                ?? (targetWindow as? TerminalWindow)
+
+            if let inlineHostWindow, inlineHostWindow.beginInlineTabTitleEdit(for: targetWindow) {
+                return
+            }
+        }
+
         promptTabTitle()
     }
 
